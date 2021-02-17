@@ -39,7 +39,7 @@ public class MealSetting {
 				+ "DEFAULT CHARACTER SET = utf8;");
 		
 		execute("CREATE TABLE IF NOT EXISTS `meal`.`meal` (\r\n"
-				+ "  `mealNo` INT(11) NOT NULL,\r\n"
+				+ "  `mealNo` INT(11) NOT NULL AUTO_INCREMENT,\r\n"
 				+ "  `cuisineNo` INT(11) NULL DEFAULT NULL,\r\n"
 				+ "  `mealName` VARCHAR(20) NULL DEFAULT NULL,\r\n"
 				+ "  `price` INT(11) NULL DEFAULT NULL,\r\n"
