@@ -45,7 +45,7 @@ public class BaseFrame extends JFrame{
 	}
 	
 	
-	public JButton createButton(String title,ActionListener act) {
+	public static JButton createButton(String title,ActionListener act) {
 		JButton button = new JButton(title);
 		button.addActionListener(act);
 		return button;
@@ -68,7 +68,7 @@ public class BaseFrame extends JFrame{
 //				dataList.add(rs.getObject(ABORT, null));
 			}
 		} catch (SQLException e) {
-
+			e.printStackTrace();
 		}
 		
 	}

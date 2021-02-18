@@ -12,7 +12,7 @@ public class EmployeeRegistrationFrame extends BaseFrame{
 	private JPasswordField passwdField,passwdField2;
 	
 	public EmployeeRegistrationFrame() {
-		super(400, 300, "»ç¿øµî·Ï");
+		super(400, 300, "ì‚¬ì›ë“±ë¡");
 		
 		numField = new JTextField();
 		numField.setEnabled(false);
@@ -23,16 +23,16 @@ public class EmployeeRegistrationFrame extends BaseFrame{
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(5, 2));
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-		panel.add(createLabel("»ç¿ø¹øÈ£:",null));
+		panel.add(createLabel("ì‚¬ì›ë²ˆí˜¸:",null));
 		panel.add(numField);
-		panel.add(createLabel("»ç ¿ø ¸í:",null));
+		panel.add(createLabel("ì‚¬ ì› ëª…:",null));
 		panel.add(nameField);
-		panel.add(createLabel("ÆĞ½º¿öµå:",null));
+		panel.add(createLabel("íŒ¨ìŠ¤ì›Œë“œ:",null));
 		panel.add(passwdField);
-		panel.add(createLabel("ÆĞ½º¿öµå ÀçÀÔ·Â:",null));
+		panel.add(createLabel("íŒ¨ìŠ¤ì›Œë“œ ì¬ì…ë ¥:",null));
 		panel.add(passwdField2);
-		panel.add(createButton("µî·Ï", e->regist()));
-		panel.add(createButton("´İ±â", e->setVisible(false)));
+		panel.add(createButton("ë“±ë¡", e->registBtnAct()));
+		panel.add(createButton("ë‹«ê¸°", e->setVisible(false)));
 		
 		add(panel);
 		
@@ -52,21 +52,27 @@ public class EmployeeRegistrationFrame extends BaseFrame{
 		return false;
 	}
 	
-	
 	private void regist() {
 		
+	}
+	
+	
+	private void registBtnAct() {
+		
 		if(isEmpty()) {
-			showErrorMessage("Ç×¸ñ ´©¶ô", "Message");
+			showErrorMessage("í•­ëª© ëˆ„ë½", "Message");
 			return;
 		}
 
 		
 		if(isDifferent()) {
-			showErrorMessage("ÆĞ½º¿öµå È®ÀÎ ¿ä¸Á", "Message");
+			showErrorMessage("íŒ¨ìŠ¤ì›Œë“œ í™•ì¸ ìš”ë§", "Message");
 			return;
 		}
 			
 		
 	}
+	
+	
 	
 }

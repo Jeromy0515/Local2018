@@ -8,14 +8,14 @@ import javax.swing.JPanel;
 public class MainFrame extends BaseFrame{
 
 	public MainFrame(){
-		super(300, 300, "¸ÞÀÎ");
+		super(300, 300, "ë©”ì¸");
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(4,1));
-		panel.add(createButton("»ç¿øµî·Ï", e->new EmployeeRegistrationFrame().setVisible(true)));
-		panel.add(createButton("»ç¿ëÀÚ", e->new CouponIssuanceFrame().setVisible(true)));
-		panel.add(createButton("°ü¸®ÀÚ", e->{}));
-		panel.add(createButton("Á¾·á", e->System.exit(0)));
+		panel.add(createButton("ì‚¬ì›ë“±ë¡", e->new EmployeeRegistrationFrame().setVisible(true)));
+		panel.add(createButton("ì‚¬ìš©ìž", e->new CouponIssuanceFrame().setVisible(true)));
+		panel.add(createButton("ê´€ë¦¬ìž", e->{}));
+		panel.add(createButton("ì¢…ë£Œ", e->System.exit(0)));
 		panel.setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
 		
 		add(panel);
