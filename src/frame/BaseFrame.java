@@ -9,12 +9,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 
 public class BaseFrame extends JFrame{
@@ -95,6 +95,9 @@ public class BaseFrame extends JFrame{
 		JOptionPane.showMessageDialog(null, caption,txt,JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	public static int showYes_No_Dialog(JPanel panel, String txt) {
+		return JOptionPane.showConfirmDialog(null,panel,txt,JOptionPane.YES_NO_OPTION);
+	}
 	
 	
 	public ResultSet executeQuery(String sql, Object...objects) {

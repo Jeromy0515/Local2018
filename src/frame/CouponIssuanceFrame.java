@@ -50,7 +50,7 @@ class WesternFood extends PaymentFrame{
 
 
 public class CouponIssuanceFrame extends BaseFrame implements Runnable{
-	private LocalDateTime time;
+	public static LocalDateTime time;
 	private JLabel timeLabel;
 	
 	public CouponIssuanceFrame() {
