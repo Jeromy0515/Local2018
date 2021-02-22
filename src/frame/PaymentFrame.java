@@ -37,6 +37,8 @@ public class PaymentFrame extends BaseFrame{
 	private JTable table;
 	private	int price = 0;
 	private int cuisineNumber;
+	public static int memberNo;
+	
 	
 	public PaymentFrame(String title) {
 		super(1050,430,"결제");
@@ -109,7 +111,7 @@ public class PaymentFrame extends BaseFrame{
 					if(i>=0) {
 						int row = table.convertRowIndexToModel(i); //실제 모델에 저장되어 있는 인덱스를 리턴
 						setMenuBtnEnabled((String)table.getValueAt(row, 1), true);
-						price -= Integer.parseInt(String.valueOf(table.getValueAt(row, 2))) * Integer.parseInt(String.valueOf(table.getValueAt(row, 3)));
+						price -= Integer.parseInt(String.valueOf(table.getValueAt(row, 3)));
 						priceLabel.setText(price+"원");
 						model.removeRow(row);
 					}
@@ -256,6 +258,7 @@ public class PaymentFrame extends BaseFrame{
 						executeNoneQuery("update meal set maxCount = maxCount - ? where mealName = ?", table.getValueAt(i, 2),table.getValueAt(i, 1));			
 						executeNoneQuery("insert into orderlist (`cuisineNo`, `mealNo`, `memberNo`, `orderCount`, `amount`, `orderDate`) values(?,?,?,?,?,?)", cuisineNumber,table.getValueAt(i, 0),memberBox.getSelectedItem(),table.getValueAt(i, 2),table.getValueAt(i, 3),CouponIssuanceFrame.time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 				}
+				memberNo = Integer.parseInt(passwdField.getText());
 			}
 			else
 				showErrorMessage("패스워드가 일치하지 않습니다.", "Message");

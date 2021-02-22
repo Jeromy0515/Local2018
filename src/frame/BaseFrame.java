@@ -138,5 +138,10 @@ public class BaseFrame extends JFrame{
 		}
 	}
 	
+	public void openFrame(JFrame frame) {
+		dispose();
+		frame.setVisible(true);
+	}
+	
 	
 }
