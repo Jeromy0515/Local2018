@@ -13,8 +13,8 @@ public class MenuRegistrationFrame extends BaseFrame{
 	private JComboBox cuisineBox,priceBox,volumeBox;
 	private int cuisineNo;
 	
-	public MenuRegistrationFrame() {
-		super(400,300,"신규 메뉴 등록");
+	public MenuRegistrationFrame(String title) {
+		super(400,300,title);
 		setLayout(new GridLayout(5,2));
 		
 		menuField = new JTextField();
@@ -52,14 +52,14 @@ public class MenuRegistrationFrame extends BaseFrame{
 		add(createButton("닫기", e->setVisible(false)));
 	}
 	
-	private boolean isEmpty() {
+	public boolean isEmpty() {
 		if(menuField.getText().equals(""))
 			return true;
 			
 		return false;
 	}
 	
-	private void regist() {
+	public void regist() {
 		if(isEmpty()) {
 			showErrorMessage("메뉴명을 입력해주세요.", "Message");
 			return;
@@ -84,6 +84,26 @@ public class MenuRegistrationFrame extends BaseFrame{
 			cuisineNo = 4;
 			break;
 		}
+	}
+	
+	public int getCuisineNo() {
+		return cuisineNo;
+	}
+	
+	public JTextField getMenuField() {
+		return menuField;
+	}
+	
+	public JComboBox<String> getCuisineBox(){
+		return cuisineBox;
+	}
+	
+	public JComboBox<Integer> getPriceBox(){
+		return priceBox;
+	}
+	
+	public JComboBox<Integer> getVolumeBox(){
+		return volumeBox;
 	}
 	
 }

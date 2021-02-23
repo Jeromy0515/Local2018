@@ -27,7 +27,6 @@ public class MenuManagementFrame extends BaseFrame{
 	private JTable table;
 	private JScrollPane scrollPane;
 	private JButton selectionBtn;
-	private boolean check = false;
 	private JComboBox<String> cuisineBox;
 	public MenuManagementFrame() {
 		super(600,700,"메뉴 관리");
@@ -55,14 +54,12 @@ public class MenuManagementFrame extends BaseFrame{
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				tableAct();
+				if(getSelectedCellCount() < table.getRowCount()) {
+					selectionBtn.setEnabled(true);
+				}
 			}
 			
 		});
-//		JCheckBox checkBox = new JCheckBox();
-//		checkBox.setSelected(B);
-//		table.getColumn(" ").setCellEditor(new DefaultCellEditor(checkBox));
-//		table.getColumn(" ").setCellRenderer();
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
 		renderer.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -88,18 +85,18 @@ public class MenuManagementFrame extends BaseFrame{
 		
 		selectionBtn = createButton("모두 선택", e->selectAll());
 		
-		JPanel panel = new JPanel();
-		panel.add(selectionBtn);
-		panel.add(createLabel("종류:", new Font("굴림",Font.BOLD,13)));
-		panel.add(cuisineBox);
-		panel.add(createButton("검색", null));
-		panel.add(createButton("수정", null));
-		panel.add(createButton("삭제", null));
-		panel.add(createButton("오늘의메뉴선정", null));
-		panel.add(createButton("닫기", e->setVisible(false)));
+		JPanel northPanel = new JPanel();
+		northPanel.add(selectionBtn);
+		northPanel.add(createLabel("종류:", new Font("굴림",Font.BOLD,13)));
+		northPanel.add(cuisineBox);
+		northPanel.add(createButton("검색", e->search()));
+		northPanel.add(createButton("수정", e->update()));
+		northPanel.add(createButton("삭제", e->delete()));
+		northPanel.add(createButton("오늘의메뉴선정", e->selectTodayMeal()));
+		northPanel.add(createButton("닫기", e->setVisible(false)));
 		
 		
-		add(panel,BorderLayout.NORTH);
+		add(northPanel,BorderLayout.NORTH);
 		add(scrollPane,BorderLayout.CENTER);
 		
 	}
@@ -108,38 +105,95 @@ public class MenuManagementFrame extends BaseFrame{
 		for(int i=0;i<table.getRowCount();i++) {
 			table.setValueAt(true, i, 0);
 		}
-		check = false;
-		selectionBtn.setEnabled(check);
+		selectionBtn.setEnabled(false);
 	}
-	
-	private void tableAct() {
-		if(!check) {
-			check = true;
-			for(int i=0;i<table.getRowCount();i++) {
-				if(Boolean.valueOf(table.getValueAt(i, 0).toString())) {
-					selectionBtn.setEnabled(check);
-					return;
-				}
-			}
-		}
-	}
-	
-	
+
 	private void search() {
-		
+		System.out.println();
 	}
 	
 	private void update() {
 		
+		if(getSelectedCellCount() == 0) {
+			showErrorMessage("수정할 메뉴를 선택해 주세요.", "Message");
+			return;
+		}
+		
+		if(getSelectedCellCount() > 1) {
+			showErrorMessage("하나씩 수정가능합니다.", "Message");
+			return;
+		}
+		
+		
+		MenuRegistrationFrame menuUpdateFrame = new MenuRegistrationFrame("메뉴 수정") {
+			@Override
+			public void regist() {
+				if(isEmpty()) {
+					showErrorMessage("메뉴명을 입력해주세요.", "Message");
+					return;
+				}
+				
+				showInformationMessasge("메뉴가 수정되었습니다.", "Message");
+				for(int row=0;row<table.getRowCount();row++) {
+					if(Boolean.valueOf(table.getValueAt(row,0).toString())) {
+						executeNoneQuery("update `meal` set cuisineNo=?,mealName=?,price=?,maxCount=? where mealName=?",getCuisineBox().getSelectedIndex()+1,getMenuField().getText(),getPriceBox().getSelectedItem(),getVolumeBox().getSelectedItem(),(String)table.getValueAt(row, 1)); 
+						break;
+					}
+				}
+				setTable();
+			}
+		};
+		menuUpdateFrame.getCuisineBox().setSelectedItem(cuisineBox.getSelectedItem());
+		for(int row=0;row<table.getRowCount();row++) {
+			if(Boolean.valueOf(table.getValueAt(row,0).toString())) {
+				menuUpdateFrame.getMenuField().setText((String)table.getValueAt(row,1));
+				menuUpdateFrame.getPriceBox().setSelectedItem(table.getValueAt(row, 2));
+				menuUpdateFrame.getVolumeBox().setSelectedItem(table.getValueAt(row, 3));
+				break;
+			}
+		}
+		menuUpdateFrame.setVisible(true);
 	}
 	
 	private void delete() {
+		if(getSelectedCellCount() == 0) {
+			showErrorMessage("삭제할 메뉴를 선택해주세요.", "Message");
+			return;
+		}
 		
+		for(int row=0;row<table.getRowCount();row++) {
+			if(Boolean.valueOf(table.getValueAt(row, 0).toString())) {
+				executeNoneQuery("delete from `meal` where mealName=?", table.getValueAt(row, 1));
+			}
+		}
+		setTable();
 	}
 	
 	private void selectTodayMeal() {
+		if(getSelectedCellCount() > 25) {
+			showErrorMessage("25개를 초과할 수 없습니다.", "Message");
+			return;
+		}
 		
+		for(int row=0;row<table.getRowCount();row++) {
+			if(Boolean.valueOf(table.getValueAt(row, 0).toString())) {
+				table.setValueAt('Y', row, 4);
+				executeNoneQuery("update `meal` set todayMeal='1' where mealName = ?", table.getValueAt(row, 1));
+			}
+		}
+
 	}
+	
+	private int getSelectedCellCount() {
+		int cnt = 0;
+		for(int row=0;row<table.getRowCount();row++) {
+			if(Boolean.valueOf(table.getValueAt(row, 0).toString())) {
+				cnt++;
+			}
+		}
+		return cnt;
+	}
+	
 	
 	private void setTable() {
 		model.setNumRows(0);

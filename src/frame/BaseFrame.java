@@ -89,8 +89,6 @@ public class BaseFrame extends JFrame{
 		JOptionPane.showMessageDialog(null, caption,txt,JOptionPane.ERROR_MESSAGE);
 	}
 	
-	
-	
 	public static void showInformationMessasge(String caption, String txt) {
 		JOptionPane.showMessageDialog(null, caption,txt,JOptionPane.INFORMATION_MESSAGE);
 	}
