@@ -15,7 +15,7 @@ public class EmployeeRegistrationFrame extends BaseFrame{
 	private JTextField numField,nameField;
 	private JPasswordField passwdField,passwdField2;
 	
-	public EmployeeRegistrationFrame() {
+	public EmployeeRegistrationFrame(MainFrame frame) {
 		super(400, 300, "사원등록");
 		
 		numField = new JTextField();
@@ -45,7 +45,7 @@ public class EmployeeRegistrationFrame extends BaseFrame{
 		panel.add(createLabel("패스워드 재입력:",new Font("굴림",Font.BOLD,13)));
 		panel.add(passwdField2);
 		panel.add(createButton("등록", e->registBtnAct()));
-		panel.add(createButton("닫기", e->{setVisible(false);}));
+		panel.add(createButton("닫기", e->openFrame(frame)));
 		
 		add(panel);
 		

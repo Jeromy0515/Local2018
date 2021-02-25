@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.sql.ResultSet;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,7 +18,7 @@ public class OrderStatusFrame extends BaseFrame{
 	private DefaultTableModel model;
 	private JTable table;
 	private JScrollPane scrollPane;
-	public OrderStatusFrame() {
+	public OrderStatusFrame(JFrame frame) {
 		super(300,200,"메뉴별 주문현황");
 		
 		model = new DefaultTableModel(null,"종류,주문수량".split(","));
@@ -37,7 +38,7 @@ public class OrderStatusFrame extends BaseFrame{
 			}
 		}
 		
-		JButton closeBtn = createButton("닫기", null);
+		JButton closeBtn = createButton("닫기", e->openFrame(frame));
 
 		JPanel northPanel = new JPanel();
 		northPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));

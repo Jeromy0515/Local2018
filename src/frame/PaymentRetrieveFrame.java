@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.print.PrinterException;
 import java.sql.ResultSet;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,7 +18,7 @@ public class PaymentRetrieveFrame extends BaseFrame{
 	private DefaultTableModel model;
 	private JTable table;
 	private JScrollPane scrollPane;
-	public PaymentRetrieveFrame() {
+	public PaymentRetrieveFrame(JFrame frame) {
 		super(600,700,"결제조회");
 		
 		menuField = new JTextField(13);
@@ -27,7 +28,7 @@ public class PaymentRetrieveFrame extends BaseFrame{
 		northPanel.add(createButton("조회",e->retrieval()));
 		northPanel.add(createButton("모두보기", e->showAll()));
 		northPanel.add(createButton("인쇄", e->print()));
-		northPanel.add(createButton("닫기", e->setVisible(false)));
+		northPanel.add(createButton("닫기", e->openFrame(frame)));
 		
 		model = new DefaultTableModel(null,"종류,메뉴명,사원명,결제수량,총결제금액,결제일".split(","));
 		table = new JTable(model);

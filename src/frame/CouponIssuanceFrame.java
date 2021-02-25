@@ -25,26 +25,26 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
 class KoreanFood extends PaymentFrame{
-	public KoreanFood() {
-		super("한식");
+	public KoreanFood(JFrame frame) {
+		super(frame,"한식");
 	}
 }
 
 class ChineseFood extends PaymentFrame{
-	public ChineseFood() {
-		super("중식");
+	public ChineseFood(JFrame frame) {
+		super(frame,"중식");
 	}
 }
 
 class JapaneseFood extends PaymentFrame{
-	public JapaneseFood() {
-		super("일식");
+	public JapaneseFood(JFrame frame) {
+		super(frame,"일식");
 	}
 }
 
 class WesternFood extends PaymentFrame{
-	public WesternFood() {
-		super("양식");
+	public WesternFood(JFrame frame) {
+		super(frame,"양식");
 	}
 }
 
@@ -64,10 +64,10 @@ public class CouponIssuanceFrame extends BaseFrame implements Runnable{
 		JPanel centerPanel = new JPanel();
 		centerPanel.setLayout(new GridLayout(2,2));
 		centerPanel.setPreferredSize(new Dimension(300,450));
-		centerPanel.add(createButton(new ImageIcon("image/menu_1.png"),"한식",e -> new KoreanFood().setVisible(true)));
-		centerPanel.add(createButton(new ImageIcon("image/menu_2.png"),"중식",e -> new ChineseFood().setVisible(true)));
-		centerPanel.add(createButton(new ImageIcon("image/menu_3.png"),"일식",e -> new JapaneseFood().setVisible(true)));
-		centerPanel.add(createButton(new ImageIcon("image/menu_4.png"),"양식",e -> new WesternFood().setVisible(true)));
+		centerPanel.add(createButton(new ImageIcon("image/menu_1.png"),"한식",e -> openFrame(new KoreanFood(this))));
+		centerPanel.add(createButton(new ImageIcon("image/menu_2.png"),"중식",e -> openFrame(new ChineseFood(this))));
+		centerPanel.add(createButton(new ImageIcon("image/menu_3.png"),"일식",e -> openFrame(new JapaneseFood(this))));
+		centerPanel.add(createButton(new ImageIcon("image/menu_4.png"),"양식",e -> openFrame(new WesternFood(this))));
 		
 		
 		JTabbedPane panel = new JTabbedPane();

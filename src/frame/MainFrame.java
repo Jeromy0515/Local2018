@@ -12,19 +12,18 @@ public class MainFrame extends BaseFrame{
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(4,1));
-		panel.add(createButton("사원등록", e->new EmployeeRegistrationFrame().setVisible(true)));
+		panel.add(createButton("사원등록", e->openFrame(new EmployeeRegistrationFrame(this))));
 		panel.add(createButton("사용자", e->new CouponIssuanceFrame().setVisible(true)));
-		panel.add(createButton("관리자", e->new ManagementFrame().setVisible(true)));
+		panel.add(createButton("관리자", e->openFrame(new ManagementFrame(this))));
 		panel.add(createButton("종료", e->System.exit(0)));
 		panel.setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
 		
 		add(panel);
-		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
 	public static void main(String[] args) {
-		new MainFrame().setVisible(true);;
+		new MainFrame().setVisible(true);
 	}
 
 }

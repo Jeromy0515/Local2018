@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 public class MenuRegistrationFrame extends BaseFrame{
@@ -13,7 +14,7 @@ public class MenuRegistrationFrame extends BaseFrame{
 	private JComboBox cuisineBox,priceBox,volumeBox;
 	private int cuisineNo;
 	
-	public MenuRegistrationFrame(String title) {
+	public MenuRegistrationFrame(JFrame frame,String title) {
 		super(400,300,title);
 		setLayout(new GridLayout(5,2));
 		
@@ -49,7 +50,7 @@ public class MenuRegistrationFrame extends BaseFrame{
 		add(createLabel("조리가능수량", new Font("굴림",Font.BOLD,13)));
 		add(volumeBox);
 		add(createButton("등록", e->regist()));
-		add(createButton("닫기", e->setVisible(false)));
+		add(createButton("닫기", e->openFrame(frame)));
 	}
 	
 	public boolean isEmpty() {

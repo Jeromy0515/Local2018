@@ -14,6 +14,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -28,7 +29,7 @@ public class MenuManagementFrame extends BaseFrame{
 	private JScrollPane scrollPane;
 	private JButton selectionBtn;
 	private JComboBox<String> cuisineBox;
-	public MenuManagementFrame() {
+	public MenuManagementFrame(JFrame frame) {
 		super(600,700,"메뉴 관리");
 		model = new DefaultTableModel(null," ,mealName,price,maxCount,todayMeal".split(",")){
 			@Override
@@ -93,7 +94,7 @@ public class MenuManagementFrame extends BaseFrame{
 		northPanel.add(createButton("수정", e->update()));
 		northPanel.add(createButton("삭제", e->delete()));
 		northPanel.add(createButton("오늘의메뉴선정", e->selectTodayMeal()));
-		northPanel.add(createButton("닫기", e->setVisible(false)));
+		northPanel.add(createButton("닫기", e->openFrame(frame)));
 		
 		
 		add(northPanel,BorderLayout.NORTH);
@@ -125,7 +126,8 @@ public class MenuManagementFrame extends BaseFrame{
 		}
 		
 		
-		MenuRegistrationFrame menuUpdateFrame = new MenuRegistrationFrame("메뉴 수정") {
+		MenuRegistrationFrame menuUpdateFrame = new MenuRegistrationFrame(this,"메뉴 수정") {
+			
 			@Override
 			public void regist() {
 				if(isEmpty()) {

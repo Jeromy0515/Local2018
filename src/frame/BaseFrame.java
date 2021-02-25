@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 
 public class BaseFrame extends JFrame{
 	
+	
 	static Connection connection = null;
 	static PreparedStatement pst = null;
 	
@@ -36,7 +37,6 @@ public class BaseFrame extends JFrame{
 		setTitle(title);
 		setLocationRelativeTo(null);
 	}
-	
 	
 	
 	public BaseFrame() {

@@ -16,14 +16,18 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+
 
 
 public class PaymentFrame extends BaseFrame{
@@ -40,23 +44,16 @@ public class PaymentFrame extends BaseFrame{
 	public static int memberNo;
 	
 	
-	public PaymentFrame(String title) {
+	public PaymentFrame(JFrame frame,String title) {
 		super(1050,430,"결제");
 		
-		switch(title) {
-			case "한식":
-				cuisineNumber = 1;
-				break;
-			case "중식":
-				cuisineNumber = 2;
-				break;
-			case "일식":
-				cuisineNumber = 3;
-				break;
-			case "양식":
-				cuisineNumber = 4;
-				break;
-		}
+		cuisineNumber = switch(title) {
+			case "한식" -> {yield 1;}
+			case "중식" -> {yield 2;}
+			case "일식" -> {yield 3;}
+			case "양식" -> {yield 4;}
+			default -> throw new IllegalArgumentException("Unexpected value: " + title);
+		};
 		
 		btnList = new ArrayList<JButton>();
 		
@@ -97,10 +94,13 @@ public class PaymentFrame extends BaseFrame{
 		labelPanel.add(totalPriceLabel);
 		labelPanel.add(priceLabel);
 		
-		model = new DefaultTableModel(null,"상품번호,품명,수량,금액".split(","));
+		model = new DefaultTableModel(null,"상품번호,품명,수량,금액".split(",")) {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			};
+		};
 		table = new JTable(model);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setEnabled(false);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -136,7 +136,7 @@ public class PaymentFrame extends BaseFrame{
 		JPanel btnPanel = new JPanel();
 		btnPanel.add(setComponentSize(createButton("입력", e->inputBtnAct()), 100, 35));
 		btnPanel.add(setComponentSize(createButton("결제", e->payBtnAct()), 100, 35));
-		btnPanel.add(setComponentSize(createButton("닫기", e->setVisible(false)), 100, 35));
+		btnPanel.add(setComponentSize(createButton("닫기", e->openFrame(frame)), 100, 35));
 		btnPanel.setBounds(620,330,400,50);
 		
 		
@@ -145,13 +145,13 @@ public class PaymentFrame extends BaseFrame{
 		setMenuBtn();
 		menuBtnPanel.setBounds(10, 100, 600, 200);
 		
-
 		add(mainLabel);
 		add(labelPanel);
 		add(scrollPane);
 		add(fieldPanel);
 		add(btnPanel);
 		add(menuBtnPanel);
+		
 		
 	}
 	
@@ -188,7 +188,7 @@ public class PaymentFrame extends BaseFrame{
 	
 	
 	private boolean isSelectMenu() {
-		if(menuField.getText().equals("")) 
+		if(table.getRowCount() == 0) 
 			return false;
 		
 		return true;
@@ -197,10 +197,6 @@ public class PaymentFrame extends BaseFrame{
 	
 	
 	private void inputBtnAct() {
-		if(!isSelectMenu()) {
-			showErrorMessage("메뉴를 선택해 주세요.", "Message");
-			return;
-		}
 		
 		if(!isVolume()) {
 			showErrorMessage("수량을 입력해주세요.", "Message");
@@ -233,12 +229,6 @@ public class PaymentFrame extends BaseFrame{
 	
 	
 	
-	
-	
-	
-	
-	
-
 	private void setMenuBtnEnabled(String txt,boolean b) {
 		for(int i=0;i<btnList.size();i++) {
 			if(btnList.get(i).getText().replaceAll("[^가-힣]", "").equals(txt))
@@ -251,7 +241,12 @@ public class PaymentFrame extends BaseFrame{
 	
 	
 	private void payBtnAct() {
-		if(showYes_No_Dialog(loginPanel, "결제자 인증")==0) {
+		if(!isSelectMenu()) {
+			showErrorMessage("메뉴를 선택해 주세요.", "Message");
+			return;
+		}
+		
+		if(showYes_No_Dialog(loginPanel, "결제자 인증")==JOptionPane.YES_OPTION) {
 			if(isMember()) {
 				showInformationMessasge("결제가 완료되었습니다.\n식권을 출력합니다.", "Message");
 				for(int i=0;i<table.getRowCount();i++) {
@@ -288,7 +283,7 @@ public class PaymentFrame extends BaseFrame{
 				String menuName = rs.getString("mealName");
 				JButton button = setComponentSize(createButton(menuName+"("+rs.getInt("price")+")", null), 120, 60);
 				btnList.add(button);
-				button.addActionListener(e->menuBtnAct(button,menuName));
+				button.addActionListener(e->menuBtnAct(menuName));
 				menuBtnPanel.add(button);
 			}
 		} catch (SQLException e) {
@@ -297,7 +292,7 @@ public class PaymentFrame extends BaseFrame{
 		
 	}
 	
-	private void menuBtnAct(JButton button,String txt) {
+	private void menuBtnAct(String txt) {
 		menuField.setText(txt);
 	}
 	
